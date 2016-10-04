@@ -48,6 +48,11 @@ object ParamShow {
       formatParam(name, Some(value.value))
   }
 
+  implicit object CoverParamShow extends ParamShow[CoverConfig] {
+    override def show(name: String, value: CoverConfig): Iterable[String] =
+      Seq("cover") ++ CoverConfig.toParameters(value)
+  }
+
   implicit object TableOfContentParamShow extends ParamShow[TableOfContentConfig] {
     override def show(name: String, value: TableOfContentConfig): Iterable[String] =
       Seq("toc") ++ TableOfContentConfig.toParameters(value)

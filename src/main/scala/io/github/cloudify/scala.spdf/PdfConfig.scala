@@ -78,6 +78,8 @@ trait PdfConfig extends PageConfig {
 
   val outlineDepth = Parameter[Int]("outline-depth")
 
+  val cover = Parameter[CoverConfig]("cover")
+
   val toc = Parameter[TableOfContentConfig]("toc")
 
 }
@@ -143,6 +145,7 @@ object PdfConfig {
       username.toParameter,
       viewportSize.toParameter,
       zoom.toParameter,
+      cover.toParameter, // order is important
       toc.toParameter // order is important
     ).flatten
   }
