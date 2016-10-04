@@ -109,15 +109,19 @@ libraryDependencies := {
 /* publishing */
 publishMavenStyle := true
 
+externalResolvers := Seq(
+  "Nexus Proxy Repository" at "http://nexus-office.sentione.com:8086/nexus/content/groups/public"
+)
+
 publishTo <<= version { (v: String) =>
-  val nexus = "https://oss.sonatype.org/"
+  val nexus = "http://nexus-office.sentione.com:8086/nexus/"
   if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/snapshots")
+    Some("snapshots" at nexus + "content/repositories/chimeo-snapshots")
   else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    Some("releases" at nexus + "content/repositories/chimeo-releases")
 }
 
-credentials += Credentials(Path.userHome / ".credentials.sonatype")
+credentials += Credentials(Path.userHome / ".nexusCredentials")
 
 publishArtifact in Test := false
 
@@ -147,7 +151,7 @@ site.includeScaladoc()
 
 ghpages.settings
 
-git.remoteRepo := "git@github.com:cloudify/sPDF.git"
+git.remoteRepo := "https://github.com/SentiOne/sPDF.git"
 
 seq(lsSettings:_*)
 
