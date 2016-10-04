@@ -23,10 +23,9 @@ class Pdf(executablePath: String, config: PdfConfig) {
    * Generates the command line needed to execute `wkhtmltopdf`
    */
   private def toCommandLine[A: SourceDocumentLike, B: DestinationDocumentLike](source: A, destination: B): Seq[String] =
-    Seq(executablePath) ++
+    Seq(executablePath, "--quiet") ++
       PdfConfig.toParameters(config) ++
       Seq(
-        "--quiet",
         implicitly[SourceDocumentLike[A]].commandParameter(source),
         implicitly[DestinationDocumentLike[B]].commandParameter(destination)
       )

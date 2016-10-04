@@ -6,35 +6,19 @@ import ParamShow._
 /**
  * Holds the configuration parameters of Pdf Kit
  */
-trait PdfConfig {
+trait PdfConfig extends PageConfig {
 
   /**
    * Options for `wkhtmltopdf` command
    * See `wkhtmltopdf --extended-help` for a description of each option
    */
 
-  val allow = Parameter[Iterable[String]]("allow")
-
-  val defaultHeader = Parameter[Boolean]("default-header")
-
-  val disableExternalLinks = Parameter[Boolean]("disable-external-links")
-
-  val disableInternalLinks = Parameter[Boolean]("disable-internal-links")
-
-  val disableJavascript = Parameter[Boolean]("disable-javascript")
-
   @deprecated("Use noPdfCompression instead", "1.3.1")
   val disablePdfCompression = Parameter[Boolean]("disable-pdf-compression")
 
   val noPdfCompression = Parameter[Boolean]("no-pdf-compression")
 
-  val disableSmartShrinking = Parameter[Boolean]("disable-smart-shrinking")
-
-  val javascriptDelay = Parameter[Int]("javascript-delay")
-
   val convertForms = Parameter[Boolean]("forms")
-
-  val encoding = Parameter[String]("encoding", "UTF-8")
 
   val grayScale = Parameter[Boolean]("grayscale")
 
@@ -48,25 +32,15 @@ trait PdfConfig {
 
   val marginTop = Parameter[String]("margin-top")
 
-  val minimumFontSize = Parameter[Int]("minimum-font-size")
-
-  val background = Parameter[Option[Boolean]]("background")
-
   val orientation = Parameter[PageOrientation]("orientation")
 
   val pageHeight = Parameter[String]("page-height")
-
-  val pageOffset = Parameter[String]("page-offset")
 
   val pageSize = Parameter[String]("page-size")
 
   val pageWidth = Parameter[String]("page-width")
 
   val title = Parameter[String]("title")
-
-  val tableOfContent = Parameter[Boolean]("toc")
-
-  val zoom = Parameter[Float]("zoom")
 
   val footerCenter = Parameter[String]("footer-center")
 
@@ -100,63 +74,11 @@ trait PdfConfig {
 
   val headerSpacing = Parameter[Float]("header-spacing")
 
-  val tableOfContentDepth = Parameter[Int]("toc-depth")
-
-  val tableOfContentDisableBackLinks = Parameter[Boolean]("toc-disable-back-links")
-
-  val tableOfContentDisableLinks = Parameter[Boolean]("toc-disable-links")
-
-  val tableOfContentFontName = Parameter[String]("toc-font-name")
-
-  val tableOfContentHeaderFontName = Parameter[String]("toc-header-font-name")
-
-  val tableOfContentHeaderFontSize = Parameter[Int]("toc-header-font-size")
-
-  val tableOfContentHeaderText = Parameter[String]("toc-header-text")
-
-  val tableOfContentLevel1FontSize = Parameter[Int]("toc-l1-font-size")
-
-  val tableOfContentLevel1Indentation = Parameter[Int]("toc-l1-indentation")
-
-  val tableOfContentLevel2FontSize = Parameter[Int]("toc-l2-font-size")
-
-  val tableOfContentLevel2Indentation = Parameter[Int]("toc-l2-indentation")
-
-  val tableOfContentLevel3FontSize = Parameter[Int]("toc-l3-font-size")
-
-  val tableOfContentLevel3Indentation = Parameter[Int]("toc-l3-indentation")
-
-  val tableOfContentLevel4FontSize = Parameter[Int]("toc-l4-font-size")
-
-  val tableOfContentLevel4Indentation = Parameter[Int]("toc-l4-indentation")
-
-  val tableOfContentLevel5FontSize = Parameter[Int]("toc-l5-font-size")
-
-  val tableOfContentLevel5Indentation = Parameter[Int]("toc-l5-indentation")
-
-  val tableOfContentLevel6FontSize = Parameter[Int]("toc-l6-font-size")
-
-  val tableOfContentLevel6Indentation = Parameter[Int]("toc-l6-indentation")
-
-  val tableOfContentLevel7FontSize = Parameter[Int]("toc-l7-font-size")
-
-  val tableOfContentLevel7Indentation = Parameter[Int]("toc-l7-indentation")
-
-  val tableOfContentNoDots = Parameter[Boolean]("toc-no-dots")
-
   val outline = Parameter[Option[Boolean]]("outline")
 
   val outlineDepth = Parameter[Int]("outline-depth")
 
-  val printMediaType = Parameter[Option[Boolean]]("print-media-type")
-
-  val userStyleSheet = Parameter[String]("user-style-sheet")
-
-  val username = Parameter[String]("username")
-
-  val password = Parameter[String]("password")
-
-  val viewportSize = Parameter[String]("viewport-size")
+  val toc = Parameter[TableOfContentConfig]("toc")
 
 }
 
@@ -216,34 +138,12 @@ object PdfConfig {
       pageWidth.toParameter,
       password.toParameter,
       printMediaType.toParameter,
-      tableOfContent.toParameter,
-      tableOfContentDepth.toParameter,
-      tableOfContentDisableBackLinks.toParameter,
-      tableOfContentDisableLinks.toParameter,
-      tableOfContentFontName.toParameter,
-      tableOfContentHeaderFontName.toParameter,
-      tableOfContentHeaderFontSize.toParameter,
-      tableOfContentHeaderText.toParameter,
-      tableOfContentLevel1FontSize.toParameter,
-      tableOfContentLevel1Indentation.toParameter,
-      tableOfContentLevel2FontSize.toParameter,
-      tableOfContentLevel2Indentation.toParameter,
-      tableOfContentLevel3FontSize.toParameter,
-      tableOfContentLevel3Indentation.toParameter,
-      tableOfContentLevel4FontSize.toParameter,
-      tableOfContentLevel4Indentation.toParameter,
-      tableOfContentLevel5FontSize.toParameter,
-      tableOfContentLevel5Indentation.toParameter,
-      tableOfContentLevel6FontSize.toParameter,
-      tableOfContentLevel6Indentation.toParameter,
-      tableOfContentLevel7FontSize.toParameter,
-      tableOfContentLevel7Indentation.toParameter,
-      tableOfContentNoDots.toParameter,
       title.toParameter,
       userStyleSheet.toParameter,
       username.toParameter,
       viewportSize.toParameter,
-      zoom.toParameter
+      zoom.toParameter,
+      toc.toParameter // order is important
     ).flatten
   }
 

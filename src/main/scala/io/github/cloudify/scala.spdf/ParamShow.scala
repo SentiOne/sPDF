@@ -48,6 +48,11 @@ object ParamShow {
       formatParam(name, Some(value.value))
   }
 
+  implicit object TableOfContentParamShow extends ParamShow[TableOfContentConfig] {
+    override def show(name: String, value: TableOfContentConfig): Iterable[String] =
+      Seq("toc") ++ TableOfContentConfig.toParameters(value)
+  }
+
   private def formatParam(name: String, value: Option[String]): Iterable[String] =
     Seq(Some("--" + name), value).flatten
 
