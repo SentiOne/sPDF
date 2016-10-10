@@ -114,11 +114,7 @@ externalResolvers := Seq(
 )
 
 publishTo <<= version { (v: String) =>
-  val nexus = "http://nexus-office.sentione.com:8086/nexus/"
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/chimeo-snapshots")
-  else
-    Some("releases" at nexus + "content/repositories/chimeo-releases")
+  Some("releases" at "http://nexus-office.sentione.com:8086/nexus/content/repositories/chimeo_dep")
 }
 
 credentials += Credentials(Path.userHome / ".nexusCredentials")
