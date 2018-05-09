@@ -19,9 +19,9 @@ licenses := Seq(
 organization := "io.github.cloudify"
 
 /* scala versions and options */
-scalaVersion := "2.10.6"
+scalaVersion := "2.12.4"
 
-crossScalaVersions := Seq("2.9.3", "2.10.6", "2.11.7")
+crossScalaVersions := Seq("2.12.4")
 
 // release cross builds
 ReleaseKeys.crossBuild := true
@@ -33,11 +33,6 @@ scalacOptions ++= Seq(
   "-encoding", "UTF-8"
   // "-Xcheckinit" // for debugging only, see https://github.com/paulp/scala-faq/wiki/Initialization-Order
   // "-optimise"   // this option will slow your build
-)
-
-scalacOptions ++= Seq(
-  "-Yclosure-elim",
-  "-Yinline"
 )
 
 // These language flags will be used only for 2.10.x.
@@ -84,7 +79,7 @@ libraryDependencies ++= Seq (
 
 def scalatestDependency(scalaVersion: String) = scalaVersion match {
   case v if v.startsWith("2.9") =>  "org.scalatest" %% "scalatest"  % "1.9.2" % "test"
-  case _ =>                         "org.scalatest" %% "scalatest"  % "2.2.2" % "test"
+  case _ =>                         "org.scalatest" %% "scalatest"  % "3.0.5" % "test"
 }
 
 // use different versions of scalatest for different versions of scala
@@ -98,8 +93,8 @@ libraryDependencies := {
     // if scala 2.11+ is used, add dependency on scala-xml module
     case Some((2, scalaMajor)) if scalaMajor >= 11 =>
       libraryDependencies.value ++ Seq(
-        "org.scala-lang.modules" %% "scala-xml" % "1.0.1",
-        "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
+        "org.scala-lang.modules" %% "scala-xml" % "1.1.0",
+        "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.0"
       )
     case _ =>
       libraryDependencies.value
