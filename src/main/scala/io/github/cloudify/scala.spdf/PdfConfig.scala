@@ -20,6 +20,8 @@ trait PdfConfig extends PageConfig {
 
   val convertForms = Parameter[Boolean]("forms")
 
+  val enableForms = Parameter[Boolean]("enable-forms")
+
   val grayScale = Parameter[Boolean]("grayscale")
 
   val lowQuality = Parameter[Boolean]("lowquality")
@@ -82,6 +84,7 @@ trait PdfConfig extends PageConfig {
 
   val toc = Parameter[TableOfContentConfig]("toc")
 
+  val useXServer = Parameter[Boolean]("use-xserver")
 }
 
 object PdfConfig {
@@ -99,7 +102,6 @@ object PdfConfig {
     Seq(
       allow.toParameter,
       background.toParameter,
-      convertForms.toParameter,
       defaultHeader.toParameter,
       disableExternalLinks.toParameter,
       disableInternalLinks.toParameter,
@@ -107,6 +109,7 @@ object PdfConfig {
       noPdfCompression.toParameter,
       disableSmartShrinking.toParameter,
       javascriptDelay.toParameter,
+      enableForms.toParameter,
       encoding.toParameter,
       footerCenter.toParameter,
       footerFontName.toParameter,
@@ -143,6 +146,7 @@ object PdfConfig {
       title.toParameter,
       userStyleSheet.toParameter,
       username.toParameter,
+      useXServer.toParameter,
       viewportSize.toParameter,
       zoom.toParameter,
       cover.toParameter, // order is important

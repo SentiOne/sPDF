@@ -1,9 +1,9 @@
 package io.github.cloudify.scala.spdf
 
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.WordSpec
 
-class PdfConfigSpec extends WordSpec with ShouldMatchers {
+class PdfConfigSpec extends WordSpec with Matchers {
 
   "PdfConfig" should {
 
@@ -13,13 +13,13 @@ class PdfConfigSpec extends WordSpec with ShouldMatchers {
 
     "generate parameters from config" in {
       val config = new PdfConfig {
-        convertForms := true
+        enableForms := true
         marginBottom := "1in"
         minimumFontSize := 3
         orientation := Landscape
         zoom := 1.23f
       }
-      PdfConfig.toParameters(config) should equal(Seq("--forms", "--encoding", "UTF-8", "--margin-bottom", "1in", "--minimum-font-size", "3", "--orientation", "Landscape", "--zoom", "%.2f".format(1.23f)))
+      PdfConfig.toParameters(config) should equal(Seq("--enable-forms", "--encoding", "UTF-8", "--margin-bottom", "1in", "--minimum-font-size", "3", "--orientation", "Landscape", "--zoom", "%.2f".format(1.23f)))
     }
 
     "no pdf compression" in {
@@ -49,6 +49,13 @@ class PdfConfigSpec extends WordSpec with ShouldMatchers {
         printMediaType := Some(false)
       }
       PdfConfig.toParameters(config) should contain("--no-print-media-type")
+    }
+
+    "use x-server" in {
+      val config = new PdfConfig {
+        useXServer := true
+      }
+      PdfConfig.toParameters(config) should contain("--use-xserver")
     }
 
     "check for executable in PATH" in {
