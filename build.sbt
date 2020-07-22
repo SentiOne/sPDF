@@ -1,8 +1,3 @@
-import SonatypeKeys._
-
-releaseSettings
-
-sonatypeSettings
 
 name := "sPDF"
 
@@ -18,51 +13,23 @@ licenses := Seq(
 
 organization := "io.github.cloudify"
 
-/* scala versions and options */
-scalaVersion := "2.12.4"
+scalaVersion := "2.13.1"
 
-crossScalaVersions := Seq("2.12.4")
+crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.10", "2.13.1")
 
-// release cross builds
-ReleaseKeys.crossBuild := true
+releaseCrossBuild := true
 
-// These options will be used for *all* versions.
 scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
   "-encoding", "UTF-8"
-  // "-Xcheckinit" // for debugging only, see https://github.com/paulp/scala-faq/wiki/Initialization-Order
-  // "-optimise"   // this option will slow your build
 )
-
-// These language flags will be used only for 2.10.x.
-// Uncomment those you need, or if you hate SIP-18, all of them.
-scalacOptions <++= scalaVersion map { sv =>
-  if (sv startsWith "2.10") List(
-    "-Xverify",
-    "-Ywarn-all",
-    "-feature"
-    // "-language:postfixOps",
-    // "-language:reflectiveCalls",
-    // "-language:implicitConversions"
-    // "-language:higherKinds",
-    // "-language:existentials",
-    // "-language:experimental.macros",
-    // "-language:experimental.dynamics"
-  )
-  else Nil
-}
 
 fork in Test := true
 
 parallelExecution in Test := false
 
-/* sbt behavior */
 logLevel in compile := Level.Warn
-
-traceLevel := 5
-
-offline := false
 
 scmInfo := Some(
   ScmInfo(
@@ -72,45 +39,37 @@ scmInfo := Some(
   )
 )
 
-/* dependencies */
-libraryDependencies ++= Seq (
-  "org.mockito"     %  "mockito-all"    % "1.10.8" % "test"
-)
 
-def scalatestDependency(scalaVersion: String) = scalaVersion match {
-  case v if v.startsWith("2.9") =>  "org.scalatest" %% "scalatest"  % "1.9.2" % "test"
-  case _ =>                         "org.scalatest" %% "scalatest"  % "3.0.5" % "test"
-}
-
-// use different versions of scalatest for different versions of scala
-libraryDependencies <+= scalaVersion(scalatestDependency(_))
-
-// add scala-xml dependency when needed (for Scala 2.11 and newer) in a robust way
-// this mechanism supports cross-version publishing
+// add dependencies on standard Scala modules, in a way
+// supporting cross-version publishing
 // taken from: http://github.com/scala/scala-module-dependency-sample
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
-    // if scala 2.11+ is used, add dependency on scala-xml module
     case Some((2, scalaMajor)) if scalaMajor >= 11 =>
       libraryDependencies.value ++ Seq(
-        "org.scala-lang.modules" %% "scala-xml" % "1.1.0",
-        "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.0"
+        "org.scala-lang.modules" %% "scala-xml" % "1.2.0",
+        "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.2"
       )
     case _ =>
       libraryDependencies.value
   }
 }
 
-/* publishing */
+libraryDependencies ++= Seq (
+  "org.scalatest"   %% "scalatest"      % "3.0.8"   % "test",
+  "org.mockito"     %  "mockito-all"    % "1.10.8"  % "test"
+)
+
+// publishing
 publishMavenStyle := true
 
 externalResolvers := Seq(
   "Nexus Proxy Repository" at "http://nexus-office.sentione.com:8086/nexus/content/groups/public"
 )
 
-publishTo <<= version { (v: String) =>
+publishTo := (version apply { (v: String) =>
   Some("releases" at "http://nexus-office.sentione.com:8086/nexus/content/repositories/chimeo_dep")
-}
+}).value
 
 credentials += Credentials(Path.userHome / ".nexusCredentials")
 
@@ -135,15 +94,3 @@ pomExtra := (
 
 // Josh Suereth's step-by-step guide to publishing on sonatype
 // http://www.scala-sbt.org/using_sonatype.html
-
-site.settings
-
-site.includeScaladoc()
-
-ghpages.settings
-
-git.remoteRepo := "https://github.com/SentiOne/sPDF.git"
-
-seq(lsSettings:_*)
-
-(LsKeys.tags in LsKeys.lsync) := Seq("pdf", "webkit")
